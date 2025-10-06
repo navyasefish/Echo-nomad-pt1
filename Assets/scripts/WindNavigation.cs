@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class WindNavigation : MonoBehaviour
@@ -9,44 +8,42 @@ public class WindNavigation : MonoBehaviour
   public Transform objective;
   public Transform player;
   public bool is_guiding = false;
-  Vector3 direction = new Vector3(0f,0f,0f);
-  float guide_ticks = 0f;
-  float max_wait = 10f;
+
+  Vector3 direction = Vector3.zero;
+  public float windMax = 5f;       // Maximum wind strength
+  public float windSpeed = 1f;     // How fast wind increases/decreases
+  private float currentWind = 0f;
+
   void Update()
   {
-    // Check for key press
+    // Toggle guiding on Z key press
     if (Input.GetKeyUp(KeyCode.Z))
     {
-      Debug.Log("Z key pressed — attempting to start guiding wind.");
-      start_guiding_wind();
+      is_guiding = !is_guiding;
+      Debug.Log(is_guiding ? "✅ Guiding wind started." : "🛑 Guiding wind stopped.");
     }
 
+    // Update wind direction and strength
     if (is_guiding)
     {
-      // Add guiding logic here later
-      guide_ticks += Time.deltaTime;
-      guide_ticks = guide_ticks > max_wait ? max_wait : guide_ticks;
-      Debug.Log(" wind guide active !!"+ guide_ticks);
-      Windzone.windMain = guide_ticks/2;
-      if (guide_ticks == max_wait)
-      {
-        is_guiding = false;
-        Debug.Log(" wind guide ended");
-      }
+      // Update direction every frame
+      direction = objective.position - player.position;
+      direction.y = 0f; // optional: keep wind horizontal
+      Windzone.transform.rotation = Quaternion.LookRotation(direction);
+
+      // Smoothly increase wind
+      currentWind = Mathf.Min(currentWind + windSpeed * Time.deltaTime, windMax);
     }
-  }
+    else
+    {
+      // Smoothly decrease wind back to zero
+      currentWind = Mathf.Max(currentWind - windSpeed * Time.deltaTime, 0f);
+    }
 
-  void start_guiding_wind()
-  {
-    if (is_guiding) return;
+    Windzone.windMain = currentWind;
 
-    // Start guiding
-    direction = objective.position - player.position;
-    Debug.DrawLine(player.position, objective.position, Color.green, 12f);
-    Debug.Log($"Guiding wind started.\nDirection: {direction}\nFrom {player.name} to {objective.name}");
-    Windzone.transform.rotation = Quaternion.LookRotation(direction);
-    is_guiding = true;
-    guide_ticks = 0f;
-    Windzone.windMain = 0f;
+    // Optional debug
+    Debug.DrawLine(player.position, objective.position, Color.cyan);
+    Debug.Log($"Wind forward: {Windzone.transform.forward}, Strength: {currentWind}");
   }
 }
