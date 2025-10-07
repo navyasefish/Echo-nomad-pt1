@@ -44,6 +44,6 @@ public class WindNavigation : MonoBehaviour
 
     // Optional debug
     Debug.DrawLine(player.position, objective.position, Color.cyan);
-    Debug.Log($"Wind forward: {Windzone.transform.forward}, Strength: {currentWind}");
+    //Debug.Log($"Wind forward: {Windzone.transform.forward}, Strength: {currentWind}");
   }
 }
