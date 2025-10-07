@@ -11,19 +11,22 @@ public class AreaTrigger : MonoBehaviour
   public bool oneSided = true;
   public Vector3 triggerForward = Vector3.forward;
 
+  [Header("References")]
+  public AreaPopup areaPopup; // Assign your AreaPopup here
+
   private void OnTriggerEnter(Collider other)
   {
-    Debug.Log($"AreaTrigger: OnTriggerEnter called. Collider = {other.name}");
+    Debug.Log($"AreaTrigger ({areaName}): OnTriggerEnter called. Collider = {other.name}");
 
     if (!other.CompareTag("Player"))
     {
-      Debug.Log("AreaTrigger: Collider is not the player, ignoring.");
+      Debug.Log($"AreaTrigger ({areaName}): Collider is not the player, ignoring.");
       return;
     }
 
     if (showOnce && hasShown)
     {
-      Debug.Log("AreaTrigger: Already shown, ignoring.");
+      Debug.Log($"AreaTrigger ({areaName}): Already shown, ignoring.");
       return;
     }
 
@@ -31,24 +34,35 @@ public class AreaTrigger : MonoBehaviour
     {
       Vector3 toPlayer = other.transform.position - transform.position;
       float dot = Vector3.Dot(toPlayer.normalized, transform.TransformDirection(triggerForward));
-      Debug.Log($"AreaTrigger: Dot product = {dot}");
+      Debug.Log($"AreaTrigger ({areaName}): Dot product = {dot}");
 
       if (dot < 0)
       {
-        Debug.Log($"AreaTrigger: Player entered from front, showing popup '{areaName}'");
-        FindObjectOfType<AreaPopup>().ShowAreaName(areaName);
-        hasShown = true;
+        Debug.Log($"AreaTrigger ({areaName}): Player entered from front, showing popup");
+        ShowPopup();
       }
       else
       {
-        Debug.Log("AreaTrigger: Player entered from the wrong side, ignoring.");
+        Debug.Log($"AreaTrigger ({areaName}): Player entered from wrong side, ignoring.");
       }
     }
     else
     {
-      Debug.Log($"AreaTrigger: Showing popup '{areaName}' (no direction check)");
-      FindObjectOfType<AreaPopup>().ShowAreaName(areaName);
+      Debug.Log($"AreaTrigger ({areaName}): Showing popup (no direction check)");
+      ShowPopup();
+    }
+  }
+
+  private void ShowPopup()
+  {
+    if (areaPopup != null)
+    {
+      areaPopup.ShowAreaName(areaName);
       hasShown = true;
+    }
+    else
+    {
+      Debug.LogWarning($"AreaTrigger ({areaName}): AreaPopup reference is missing!");
     }
   }
 }

@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
-using TMPro;
+using TMPro; // or using UnityEngine.UI; if using standard Text
 
 public class AreaPopup : MonoBehaviour
 {
   [Header("UI References")]
-  public CanvasGroup canvasGroup;   // assign Rainforest's CanvasGroup
-  public TextMeshProUGUI areaText;  // assign TextMeshPro inside Rainforest
+  public GameObject popupParent;           // Single popup parent
+  public TextMeshProUGUI areaNameText;     // Change to Text if not using TextMeshPro
 
   [Header("Popup Settings")]
   public float displayTime = 2f;
@@ -14,28 +14,48 @@ public class AreaPopup : MonoBehaviour
 
   [Header("Optional Sounds")]
   public AudioSource audioSource;
-  public AudioClip popupSound;      // sound for fade in
-  public AudioClip exitSound;       // sound for fade out
+  public AudioClip popupSound;
+  public AudioClip exitSound;
 
   private Coroutine currentRoutine;
+  private CanvasGroup canvasGroup;
 
-  public void ShowAreaName(string name)
+  private void Awake()
   {
-    Debug.Log("ShowAreaName called: " + name);
+    // Setup CanvasGroup on the popup parent
+    if (popupParent != null)
+    {
+      canvasGroup = popupParent.GetComponent<CanvasGroup>();
+      if (canvasGroup == null)
+        canvasGroup = popupParent.AddComponent<CanvasGroup>();
 
-    // Enable the Rainforest object
-    canvasGroup.gameObject.SetActive(true);
+      popupParent.SetActive(false);
+    }
+  }
 
+  public void ShowAreaName(string areaName)
+  {
+    if (popupParent == null || areaNameText == null)
+    {
+      Debug.LogWarning("AreaPopup: Missing references!");
+      return;
+    }
+
+    // Update the text content
+    areaNameText.text = areaName;
+
+    // Enable the popup
+    popupParent.SetActive(true);
+
+    // Stop any existing routine and start new one
     if (currentRoutine != null)
       StopCoroutine(currentRoutine);
 
-    currentRoutine = StartCoroutine(ShowPopup(name));
+    currentRoutine = StartCoroutine(ShowRoutine());
   }
 
-  private IEnumerator ShowPopup(string name)
+  private IEnumerator ShowRoutine()
   {
-    areaText.text = name;
-
     // Fade in
     canvasGroup.alpha = 0;
     if (audioSource != null && popupSound != null)
@@ -60,7 +80,6 @@ public class AreaPopup : MonoBehaviour
       yield return null;
     }
 
-    // Disable Rainforest again
-    canvasGroup.gameObject.SetActive(false);
+    popupParent.SetActive(false);
   }
 }
