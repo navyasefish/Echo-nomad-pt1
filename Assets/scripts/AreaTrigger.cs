@@ -4,8 +4,9 @@ public class AreaTrigger : MonoBehaviour
 {
   [Header("Popup Settings")]
   public string areaName = "Rainforest";
-  public bool showOnce = true;
-  private bool hasShown = false;
+  public bool showOnce = false;
+  public float cooldownTime = 5f;
+  private float lastShownTime = -999f;
 
   [Header("Direction Settings")]
   public bool oneSided = true;
@@ -24,9 +25,16 @@ public class AreaTrigger : MonoBehaviour
       return;
     }
 
-    if (showOnce && hasShown)
+    if (showOnce && lastShownTime > 0)
     {
-      Debug.Log($"AreaTrigger ({areaName}): Already shown, ignoring.");
+      Debug.Log($"AreaTrigger ({areaName}): Already shown once, ignoring.");
+      return;
+    }
+
+    if (!showOnce && (Time.time - lastShownTime) < cooldownTime)
+    {
+      float remaining = cooldownTime - (Time.time - lastShownTime);
+      Debug.Log($"AreaTrigger ({areaName}): On cooldown. {remaining:F1}s remaining.");
       return;
     }
 
@@ -58,7 +66,7 @@ public class AreaTrigger : MonoBehaviour
     if (areaPopup != null)
     {
       areaPopup.ShowAreaName(areaName);
-      hasShown = true;
+      lastShownTime = Time.time;
     }
     else
     {
