@@ -7905,7 +7905,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -8045,7 +8045,7 @@ MonoBehaviour:
   autoCollectRadius: 1.5
   interactKey: 101
   glowController: {fileID: 0}
-  collectibleID: crystals_03
+  collectibleID: crystal_01
 --- !u!4 &697692862 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4503206606046912, guid: 2b9f1e7e38b05824cb39e4d1b5a4fce5, type: 3}
@@ -11861,11 +11861,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collectionSound: {fileID: 8300000, guid: 0538e417597bbfa4d8a200af928e3bc4, type: 3}
   soundVolume: 1
-  autoCollectOnProximity: 0
+  autoCollectOnProximity: 1
   autoCollectRadius: 1.5
   interactKey: 101
   glowController: {fileID: 0}
-  collectibleID: seeweed_01
+  collectibleID: seeweed_03
 --- !u!82 &1644108414
 AudioSource:
   m_ObjectHideFlags: 0

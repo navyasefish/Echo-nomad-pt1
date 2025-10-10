@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f91c9ca7c078744a8199b27ac17302f, type: 3}
-  m_Name: crystals_03
+  m_Name: crystal_01
   m_EditorClassIdentifier: 
-  collectibleID: crystals_03
-  displayName: Crystals
+  collectibleID: crystal_01
+  displayName: Crystal
   soundClip: {fileID: 8300000, guid: b62121342e3a93849947eb8c80155b9d, type: 3}
   icon: {fileID: 21300000, guid: dbfe5f82920389744b54cfe517da18bb, type: 3}
   lockedIcon: {fileID: 21300000, guid: b79fe7cb3534c1646a1f1e83f2adc9b8, type: 3}
