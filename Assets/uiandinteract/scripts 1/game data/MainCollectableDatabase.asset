@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: MainCollectableDatabase
   m_EditorClassIdentifier: 
   allCollectibles:
-  - {fileID: 11400000, guid: beacd6537953fad4b8bd1aff4b810981, type: 2}
+  - {fileID: 11400000, guid: 1682e0e651722c842a4f52a07ad29dbf, type: 2}
+  - {fileID: 11400000, guid: 053d4ad79cc112b4986cd8598853d71c, type: 2}
+  - {fileID: 11400000, guid: 6ca863838016a9048b0e59d346c47003, type: 2}
+  - {fileID: 11400000, guid: ec19cbc6ee719d64eb76710936c7db56, type: 2}

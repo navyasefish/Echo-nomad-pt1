@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f91c9ca7c078744a8199b27ac17302f, type: 3}
+  m_Name: crystals_03
+  m_EditorClassIdentifier: 
+  collectibleID: crystals_03
+  displayName: Crystals
+  soundClip: {fileID: 8300000, guid: b62121342e3a93849947eb8c80155b9d, type: 3}
+  icon: {fileID: 21300000, guid: dbfe5f82920389744b54cfe517da18bb, type: 3}
+  lockedIcon: {fileID: 21300000, guid: b79fe7cb3534c1646a1f1e83f2adc9b8, type: 3}
+  description: 
+  biome: 0
