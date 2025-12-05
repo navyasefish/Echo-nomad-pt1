@@ -15,5 +15,5 @@ MonoBehaviour:
   allCollectibles:
   - {fileID: 11400000, guid: f8f6ac9ac4e874f4bbda8ceed5ba8bf5, type: 2}
   - {fileID: 11400000, guid: 053d4ad79cc112b4986cd8598853d71c, type: 2}
-  - {fileID: 11400000, guid: 6f6b820fd72535b42abb57848a76ae8c, type: 2}
   - {fileID: 11400000, guid: ec19cbc6ee719d64eb76710936c7db56, type: 2}
+  - {fileID: 11400000, guid: cdb444cfe19376c4480860beaf7d6b02, type: 2}

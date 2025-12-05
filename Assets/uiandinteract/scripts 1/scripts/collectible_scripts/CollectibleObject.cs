@@ -66,11 +66,20 @@ public class CollectibleObject : MonoBehaviour
 
     void Collect()
     {
-        if (isCollected) return;
+        // If globally already collected (duplicate instance) → do nothing
+        if (SaveSystem.IsCollected(collectibleID))
+            return;
 
+        if (isCollected) return;
         isCollected = true;
 
-        // Play collection sound
+        // Notify manager FIRST (so other duplicates shut down BEFORE any sound plays)
+        if (CollectibleManager.Instance != null)
+        {
+            CollectibleManager.Instance.OnCollect(this.collectibleID, transform.position);
+        }
+
+        // Play sound ONLY for the FIRST instance collected
         if (collectionSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(collectionSound, soundVolume);
@@ -78,18 +87,16 @@ public class CollectibleObject : MonoBehaviour
 
         // Turn off glow
         if (glowController != null)
-        {
             glowController.OnCollected();
-        }
 
-        // Notify the manager (this will trigger saving, UI, etc.)
-        if (CollectibleManager.Instance != null)
-        {
-            CollectibleManager.Instance.OnCollect(this.collectibleID, transform.position);
-        }
+        // Optionally disable collider
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+            col.enabled = false;
 
         Debug.Log($"Collected: {gameObject.name}");
     }
+
 
     /// <summary>
     /// Called by CollectibleManager to mark this as already collected on load.
