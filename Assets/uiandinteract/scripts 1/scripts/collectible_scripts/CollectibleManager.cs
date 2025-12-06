@@ -14,7 +14,8 @@ public class CollectibleManager : MonoBehaviour
     public delegate void CollectibleCollectedHandler(CollectibleData data);
     public event CollectibleCollectedHandler OnCollectibleCollected;
 
-    private Dictionary<string, CollectibleObject> registeredCollectibles = new Dictionary<string, CollectibleObject>();
+    private Dictionary<string, List<CollectibleObject>> registeredCollectibles = new Dictionary<string, List<CollectibleObject>>();
+
 
     void Awake()
     {
@@ -53,20 +54,22 @@ public class CollectibleManager : MonoBehaviour
             return;
         }
 
-        if (registeredCollectibles.ContainsKey(collectibleID))
+        // If key doesn't exist, create a list
+        if (!registeredCollectibles.ContainsKey(collectibleID))
         {
-            Debug.LogWarning($"CollectibleManager: Duplicate ID '{collectibleID}'");
-            return;
+            registeredCollectibles[collectibleID] = new List<CollectibleObject>();
         }
 
-        registeredCollectibles.Add(collectibleID, obj);
+        // Add this instance to the list
+        registeredCollectibles[collectibleID].Add(obj);
 
-        // Check if already collected
+        // If ID already collected → disable this instance immediately
         if (SaveSystem.IsCollected(collectibleID))
         {
             obj.SetAlreadyCollected();
         }
     }
+
 
     /// <summary>
     /// Called when a collectible is collected
