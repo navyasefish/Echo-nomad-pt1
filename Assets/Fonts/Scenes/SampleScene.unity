@@ -12059,6 +12059,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1496293897}
   - component: {fileID: 1496293898}
+  - component: {fileID: 1496293899}
   m_Layer: 0
   m_Name: InteractionTrigger
   m_TagString: Untagged
@@ -12102,6 +12103,29 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1496293899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496293896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e152beefb189f4081370fa25f255b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactPrompt: {fileID: 0}
+  dialoguePanel: {fileID: 0}
+  dialoguePanels: []
+  mixerPanel: {fileID: 0}
+  mixerButton: {fileID: 0}
+  bridgeBlocker: {fileID: 0}
+  bgMusicSource: {fileID: 0}
+  sfxSource: {fileID: 0}
+  clickSound: {fileID: 0}
+  panelSounds: []
+  typingDelay: 0.05
 --- !u!1001 &1500202914
 PrefabInstance:
   m_ObjectHideFlags: 0
