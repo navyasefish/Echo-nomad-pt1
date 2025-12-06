@@ -9083,6 +9083,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 378181036509162336, guid: 9e913bcb613cda244a49fde307f951e2, type: 3}
+      propertyPath: glowMaterial
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 378181036509162336, guid: 9e913bcb613cda244a49fde307f951e2, type: 3}
+      propertyPath: targetRenderer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6227326061507033161, guid: 9e913bcb613cda244a49fde307f951e2, type: 3}
+      propertyPath: glowController
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7158163938184981095, guid: 9e913bcb613cda244a49fde307f951e2, type: 3}
       propertyPath: m_Name
       value: fern

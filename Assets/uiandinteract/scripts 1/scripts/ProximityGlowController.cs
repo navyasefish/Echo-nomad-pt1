@@ -17,7 +17,7 @@ public class ProximityGlowController : MonoBehaviour
     private Transform playerTransform;
     private float currentGlowStrength = 0f;
     private bool isCollected = false;
-    private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
+    private static readonly int EmissionColor = Shader.PropertyToID("_GlowColor");
     private Color baseEmissionColor;
 
     void Start()
