@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: bonus_robo
   m_EditorClassIdentifier: 
   soundID: robo
-  clip: {fileID: 0}
+  clip: {fileID: 8300000, guid: f51ef5f39fa39814aa721136c1555874, type: 3}
   icon: {fileID: 0}

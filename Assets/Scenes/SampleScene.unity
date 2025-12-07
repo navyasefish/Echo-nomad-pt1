@@ -591,7 +591,6 @@ RectTransform:
   m_LocalScale: {x: 0.7083, y: 0.7083, z: 0.7083}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 513998873}
   - {fileID: 94876588}
   - {fileID: 1030694728}
   m_Father: {fileID: 1210597468}
@@ -705,6 +704,11 @@ MonoBehaviour:
   is_guiding: 0
   windMax: 2.5
   windSpeed: 1
+  windSymbol: {fileID: 0}
+  fadeDuration: 0.5
+  audioSource: {fileID: 0}
+  startSound: {fileID: 0}
+  stopSound: {fileID: 0}
 --- !u!1001 &317093393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6495,7 +6499,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -13.6325, y: -7.2706}
+  m_AnchoredPosition: {x: -13.632416, y: -7.2705994}
   m_SizeDelta: {x: 67.2539, y: 58.1656}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &622647092
@@ -6651,7 +6655,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 26c9bd70f4269c04c8f31bf7d9d93a6d, type: 3}
     m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
@@ -7119,7 +7123,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 26c9bd70f4269c04c8f31bf7d9d93a6d, type: 3}
     m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
@@ -7205,7 +7209,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 26c9bd70f4269c04c8f31bf7d9d93a6d, type: 3}
     m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
@@ -8224,8 +8228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 117fe8b4149088b488ad10a796fb69e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pausePanel: {fileID: 622647090}
-  itemMenuPanel: {fileID: 525539205}
 --- !u!4 &1028774893
 Transform:
   m_ObjectHideFlags: 0
@@ -9954,6 +9956,7 @@ RectTransform:
   - {fileID: 683702734}
   - {fileID: 622647091}
   - {fileID: 525539206}
+  - {fileID: 1210597468}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -16052,3 +16055,4 @@ SceneRoots:
   - {fileID: 618462967}
   - {fileID: 984315197}
   - {fileID: 1028774893}
+  - {fileID: 543450653186848615}
