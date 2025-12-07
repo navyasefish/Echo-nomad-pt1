@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundID: robo
   clip: {fileID: 8300000, guid: f51ef5f39fa39814aa721136c1555874, type: 3}
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: ddb3bce579b1f1d4889377f2de0ba12c, type: 3}
