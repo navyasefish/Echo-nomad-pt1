@@ -3,16 +3,19 @@ using UnityEngine.UI;
 
 public class SoundTileUI : MonoBehaviour
 {
-  public SoundDefinition sound;
-  public Image iconImage;
+  public SoundDefinition sound;   // drag your ScriptableObject here
+  public Image iconImage;         // drag your UI Image here
 
   private MixerUIManager mixer;
 
-  void Start()
+  private void OnEnable()
   {
     mixer = FindAnyObjectByType<MixerUIManager>();
-    iconImage.sprite = sound.icon;
+
+    if (sound != null && iconImage != null)
+      iconImage.sprite = sound.icon;
   }
+
 
   public bool CanUse()
   {
