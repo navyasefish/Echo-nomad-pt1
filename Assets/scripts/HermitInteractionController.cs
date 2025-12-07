@@ -103,7 +103,7 @@ public class HermitInteractionController : MonoBehaviour
     // IMPORTANT: This should ONLY trigger on M key, not E
     else if (initialCutsceneDone && Input.GetKeyDown(mixerKey))
     {
-      OpenMixer();
+      OnMixerButtonPressed();
     }
   }
 
@@ -225,6 +225,14 @@ public class HermitInteractionController : MonoBehaviour
     if (conversationActive) return;
     optionPanel.SetActive(false);
     hermitAudio?.FadeOutHumming();
-    OpenMixer();
+    if (mixerPanel != null && !mixerPanel.activeSelf)
+    {
+      mixerPanel.SetActive(true);
+      Time.timeScale = 0f; // Pause the game
+      Cursor.visible = true;
+      Cursor.lockState = CursorLockMode.None;
+      Debug.Log("Mixer opened");
+    }
+    //OpenMixer();
   }
 }
