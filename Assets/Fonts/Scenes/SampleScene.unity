@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 357.34998, y: -208.72}
+  m_AnchoredPosition: {x: 409.84998, y: -299.72}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &10034848 stripped
@@ -602,6 +602,7 @@ MonoBehaviour:
   - {fileID: 2037124038}
   - {fileID: 327732585}
   - {fileID: 1152002774}
+  repeatedCutscenePanel: {fileID: 327732585}
   cutsceneBgAudio: {fileID: 0}
   autoAdvanceDelay: 0
 --- !u!4 &112048758
@@ -2979,7 +2980,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &367501489
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9523,7 +9524,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 357.34998, y: -90}
+  m_AnchoredPosition: {x: 409.84998, y: -90}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &618462966
@@ -14194,14 +14195,14 @@ Transform:
   m_GameObject: {fileID: 1024061942}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.17, y: 0, z: -0.36}
+  m_LocalPosition: {x: 0.12, y: 1.76, z: -3.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2001337352}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1024061944
-SphereCollider:
+--- !u!65 &1024061944
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -14219,7 +14220,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 2
+  m_Size: {x: 4, y: 4, z: 4}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1028774891
 GameObject:
@@ -15569,7 +15570,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 357.34998, y: -149.36}
+  m_AnchoredPosition: {x: 409.84998, y: -194.86}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1180695266
@@ -17956,6 +17957,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a8bf6df7e21d749a18b8a8d9f2edb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mixerPanel: {fileID: 2104174888}
   hermitObject: {fileID: 2001337350}
   hermitAudio: {fileID: 2001337355}
   blockerObject: {fileID: 1024061942}
@@ -20243,7 +20245,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 357.34998, y: -218.08}
+  m_AnchoredPosition: {x: 409.84998, y: -354.58002}
   m_SizeDelta: {x: 100, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1763948016
@@ -20341,12 +20343,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 683702734}
-  - {fileID: 622647091}
   - {fileID: 525539206}
   - {fileID: 977167374}
-  - {fileID: 2104174889}
-  - {fileID: 83842783}
   - {fileID: 367501489}
+  - {fileID: 83842783}
+  - {fileID: 2104174889}
+  - {fileID: 622647091}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

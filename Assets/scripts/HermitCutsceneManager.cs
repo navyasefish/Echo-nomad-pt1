@@ -10,6 +10,9 @@ public class HermitCutsceneManager : MonoBehaviour, IStartConversation
   [Tooltip("Ordered list of panels (children) for each page in the cutscene")]
   public GameObject[] panels;
 
+  [Tooltip("Panel shown on repeated interactions (after first time)")]
+  public GameObject repeatedCutscenePanel;
+
   [Header("Audio")]
   public AudioSource cutsceneBgAudio;
 
@@ -19,32 +22,55 @@ public class HermitCutsceneManager : MonoBehaviour, IStartConversation
   // internal
   private int index = 0;
   private HermitInteractionController caller;
+  private bool isFirstInteraction = true;
+  private bool isRepeatedMode = false;
 
   private void Start()
   {
     if (cutsceneRoot != null) cutsceneRoot.SetActive(false);
     foreach (var p in panels) if (p != null) p.SetActive(false);
+    if (repeatedCutscenePanel != null) repeatedCutscenePanel.SetActive(false);
   }
 
   public void StartConversation(HermitInteractionController caller)
   {
     this.caller = caller;
-    index = 0;
+
     if (cutsceneRoot != null) cutsceneRoot.SetActive(true);
-    ShowPanel(index);
 
-    if (cutsceneBgAudio != null) cutsceneBgAudio.Play();
-
-    // start listening for Space -- Update handles it
+    if (isFirstInteraction)
+    {
+      // First time: show full cutscene
+      isRepeatedMode = false;
+      index = 0;
+      ShowPanel(index);
+      if (cutsceneBgAudio != null) cutsceneBgAudio.Play();
+    }
+    else
+    {
+      // Subsequent times: show only repeated panel
+      isRepeatedMode = true;
+      if (repeatedCutscenePanel != null) repeatedCutscenePanel.SetActive(true);
+      if (cutsceneBgAudio != null) cutsceneBgAudio.Play();
+    }
   }
 
   private void Update()
   {
     if (cutsceneRoot == null || !cutsceneRoot.activeSelf) return;
 
-    if (Input.GetKeyDown(KeyCode.Space))
+    // Handle Left Mouse Click to advance
+    if (Input.GetMouseButtonDown(0))
     {
-      NextPanel();
+      if (isRepeatedMode)
+      {
+        // Close repeated panel immediately
+        EndCutscene();
+      }
+      else
+      {
+        NextPanel();
+      }
     }
   }
 
@@ -61,6 +87,8 @@ public class HermitCutsceneManager : MonoBehaviour, IStartConversation
     }
     else
     {
+      // First cutscene completed
+      isFirstInteraction = false;
       EndCutscene();
     }
   }
@@ -83,6 +111,7 @@ public class HermitCutsceneManager : MonoBehaviour, IStartConversation
   {
     if (cutsceneBgAudio != null) cutsceneBgAudio.Stop();
     if (cutsceneRoot != null) cutsceneRoot.SetActive(false);
+    if (repeatedCutscenePanel != null) repeatedCutscenePanel.SetActive(false);
 
     // callback to caller to restore movement and optionally disable blocker
     caller?.EndInteraction(disableBlocker: true, resumeHumming: false);
