@@ -8,32 +8,59 @@ public class MainMenuController : MonoBehaviour
     public Image fadeImage;
     public float fadeDuration = 0.8f;
     public GameObject mainMenuUI;
+    public AudioSource uiClickSound;
+    public AudioSource bgMusic;
 
-    // PLAY BUTTON
+    void Start()
+    {
+        // In case fade image had some alpha
+        if (fadeImage)
+        {
+            Color c = fadeImage.color;
+            c.a = 0f;
+            fadeImage.color = c;
+        }
+    }
+
     public void PlayGame()
     {
+        // play click sound
+        if (uiClickSound) uiClickSound.Play();
+
+        // fade out bg music
+        if (bgMusic) StartCoroutine(FadeOutMusic());
+
         mainMenuUI.SetActive(false);
-        StartCoroutine(FadeAndLoad("SampleScene"));
+        StartCoroutine(FadeAndLoadScene("SampleScene"));
     }
 
-    // QUIT BUTTON
     public void QuitGame()
     {
-        Application.Quit();
-        Debug.Log("Quit pressed");
+        if (uiClickSound) uiClickSound.Play();
+
+        if (bgMusic) StartCoroutine(FadeOutMusic());
+
+        mainMenuUI.SetActive(false);
+        StartCoroutine(FadeAndQuit());
     }
 
-    // FADE + ASYNC LOAD
-    IEnumerator FadeAndLoad(string sceneName)
+    IEnumerator FadeAndLoadScene(string sceneName)
     {
-        // Load in background
-        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
-        op.allowSceneActivation = false;
+        yield return FadeToBlack();
+        SceneManager.LoadScene(sceneName);   // INSTANT LOAD — NO WAIT
+    }
 
+    IEnumerator FadeAndQuit()
+    {
+        yield return FadeToBlack();
+        Application.Quit();   // Close app instantly
+    }
+
+    IEnumerator FadeToBlack()
+    {
         float t = 0;
         Color c = fadeImage.color;
 
-        // Fade to black
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
@@ -41,8 +68,21 @@ public class MainMenuController : MonoBehaviour
             fadeImage.color = c;
             yield return null;
         }
+    }
 
-        // Switch scene immediately after full fade
-        op.allowSceneActivation = true;
+    IEnumerator FadeOutMusic()
+    {
+        float startVol = bgMusic.volume;
+        float t = 0;
+
+        while (t < 0.5f)
+        {
+            t += Time.deltaTime;
+            bgMusic.volume = Mathf.Lerp(startVol, 0f, t / 0.5f);
+            yield return null;
+        }
+
+        bgMusic.Stop();
+        bgMusic.volume = startVol;
     }
 }
