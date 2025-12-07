@@ -4,6 +4,9 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider))]
 public class HermitInteractionController : MonoBehaviour
 {
+  [Tooltip("Mixer panel UI")]
+  public GameObject mixerPanel;
+
   [Header("References (assign in inspector)")]
   [Tooltip("The Hermit object (for audio, optionally animations)")]
   public GameObject hermitObject;
@@ -17,6 +20,7 @@ public class HermitInteractionController : MonoBehaviour
   [Header("UI Panel (single parent)")]
   [Tooltip("Parent UI panel that contains InteractOption and MixerOption as children")]
   public GameObject optionPanel;
+
 
   [Tooltip("Child button or UI for Interact (E)")]
   public GameObject interactOption;
@@ -62,6 +66,8 @@ public class HermitInteractionController : MonoBehaviour
     if (interactOption != null) interactOption.SetActive(true);
     if (mixerOption != null) mixerOption.SetActive(false);
     if (blockerObject != null) blockerObject.SetActive(true);
+    if (mixerPanel != null) mixerPanel.SetActive(false);
+
 
     // auto-assign playerBridge if not set
     if (player != null && playerBridge == null)
@@ -94,8 +100,8 @@ public class HermitInteractionController : MonoBehaviour
     {
       StartInteraction();
     }
-
-    if (initialCutsceneDone && Input.GetKeyDown(mixerKey))
+    // IMPORTANT: This should ONLY trigger on M key, not E
+    else if (initialCutsceneDone && Input.GetKeyDown(mixerKey))
     {
       OpenMixer();
     }
@@ -121,14 +127,23 @@ public class HermitInteractionController : MonoBehaviour
     hermitAudio?.FadeOutHumming();
 
     // freeze player
-    if (playerBridge != null) playerBridge.DisableMovement();
+    if (playerBridge != null)
+    {
+      playerBridge.DisableMovement();
+      // Also disable jump if your bridge has this method
+      // playerBridge.DisableJump();
+    }
     else
     {
       // fallback: attempt CharacterController/Rigidbody
       var cc = player?.GetComponent<CharacterController>();
       if (cc != null) cc.enabled = false;
       var rb = player?.GetComponent<Rigidbody>();
-      if (rb != null) rb.isKinematic = true;
+      if (rb != null)
+      {
+        rb.isKinematic = true;
+        rb.velocity = Vector3.zero; // Stop any movement
+      }
     }
 
     // keep blocker active (blocks passage). If you prefer to only enable when interacting, enable it here.
@@ -164,15 +179,15 @@ public class HermitInteractionController : MonoBehaviour
     initialCutsceneDone = true;
 
     // enable mixer option next time
-    if (optionPanel != null && playerInRange)
-    {
-      optionPanel.SetActive(true);
-      if (mixerOption != null) mixerOption.SetActive(true);
-    }
+    //if (optionPanel != null && playerInRange)
+    //{
+    //  optionPanel.SetActive(true);
+    //  if (mixerOption != null) mixerOption.SetActive(true);
+    //}
 
     // disable blocker so player can pass
-    /*if (disableBlocker && blockerObject != null)
-      blockerObject.SetActive(false);*/
+    if (disableBlocker && blockerObject != null)
+      blockerObject.SetActive(false);
 
     // re-enable player
     if (playerBridge != null) playerBridge.EnableMovement();
@@ -191,8 +206,11 @@ public class HermitInteractionController : MonoBehaviour
 
   private void OpenMixer()
   {
-    // Placeholder: call your mixer UI here
-    Debug.Log("OpenMixer called — implement Mixer UI.");
+    if (mixerPanel != null && !mixerPanel.activeSelf)
+    {
+      mixerPanel.SetActive(true);
+      Debug.Log("Mixer opened");
+    }
   }
 
   // This method can be used by UI buttons for Interact/Mixer if needed
@@ -204,6 +222,9 @@ public class HermitInteractionController : MonoBehaviour
 
   public void OnMixerButtonPressed()
   {
+    if (conversationActive) return;
+    optionPanel.SetActive(false);
+    hermitAudio?.FadeOutHumming();
     OpenMixer();
   }
 }
