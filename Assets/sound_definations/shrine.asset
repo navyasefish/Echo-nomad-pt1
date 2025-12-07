@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: shrine
   m_EditorClassIdentifier: 
   soundID: shrine
-  clip: {fileID: 8300000, guid: 6aaac48e6638f114f83afa8da386f662, type: 3}
+  clip: {fileID: 8300000, guid: 873aaf650502dc84781c2615c48af505, type: 3}
   icon: {fileID: 21300000, guid: 1b4fbfbc5db0981458fcec6f0e555ef0, type: 3}

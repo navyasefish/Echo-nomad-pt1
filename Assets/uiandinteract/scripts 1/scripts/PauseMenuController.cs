@@ -6,11 +6,13 @@ public class PauseMenuController : MonoBehaviour
     [Header("Panels")]
     public GameObject pausePanel;
     public GameObject itemMenuPanel;
+    public GameObject mixerPanel;
 
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip pausePanelSound;
     public AudioClip itemPanelSound;
+    public AudioClip mixerPanelSound;
 
     private bool isPaused = false;
 
@@ -41,6 +43,26 @@ public class PauseMenuController : MonoBehaviour
         itemMenuPanel.SetActive(true);
 
         PlaySound(itemPanelSound);
+    }
+
+    public void OpenMixerPanel()
+    {
+        Time.timeScale = 0f; // Pause the game
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        pausePanel.SetActive(false);
+        itemMenuPanel.SetActive(false);
+        mixerPanel.SetActive(true);
+
+        PlaySound(mixerPanelSound);
+    }
+
+    public void BackFromMixer()
+    {
+        mixerPanel.SetActive(false);
+        pausePanel.SetActive(true);
+
+        PlaySound(pausePanelSound);
     }
 
     public void BackToPauseMenu()

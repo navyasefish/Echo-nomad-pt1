@@ -12,6 +12,7 @@ public static class SaveSystem
     private class SaveData
     {
         public List<string> collectedIDs = new List<string>();
+        private const string CURRENT_VERSION = "1.0.1";
     }
 
     /// <summary>

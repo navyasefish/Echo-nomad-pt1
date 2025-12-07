@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: bonus_trumpet
   m_EditorClassIdentifier: 
   soundID: trumpet
-  clip: {fileID: 8300000, guid: a1bc0afa59f1c974e8029bcb04377c35, type: 3}
+  clip: {fileID: 8300000, guid: 76e3439983e6c504abfb2a366d9710da, type: 3}
   icon: {fileID: 21300000, guid: 46b11cbe70c5d714fba4253715ca6e0b, type: 3}

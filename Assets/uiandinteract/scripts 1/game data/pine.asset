@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: pine
   m_EditorClassIdentifier: 
   collectibleID: pine_05
-  displayName: Cone Pine
-  soundClip: {fileID: 0}
+  displayName: Pine Cone
+  soundClip: {fileID: 8300000, guid: 29e4c75810afab34c92f3f498b8b2c0e, type: 3}
   icon: {fileID: 21300000, guid: 813aecd3e3717614fa3da917d13be3c9, type: 3}
   lockedIcon: {fileID: 21300000, guid: b79fe7cb3534c1646a1f1e83f2adc9b8, type: 3}
   description: 

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: bonus_synth
   m_EditorClassIdentifier: 
   soundID: synth
-  clip: {fileID: 8300000, guid: 16b578f5caa8ddb4ab7cff07eea7a02f, type: 3}
+  clip: {fileID: 8300000, guid: a7bc5d6fb24ab7e48a29266a6264a46e, type: 3}
   icon: {fileID: 0}

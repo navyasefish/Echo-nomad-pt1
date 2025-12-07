@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: crystal
   m_EditorClassIdentifier: 
   soundID: crystal
-  clip: {fileID: 8300000, guid: 50ed4c9a05bd84e428026d59fbaaba8e, type: 3}
+  clip: {fileID: 8300000, guid: 5851951304c60d144867c528a63b4311, type: 3}
   icon: {fileID: 21300000, guid: 24b9666f7e6ef8442a80aa580aa8bffe, type: 3}
