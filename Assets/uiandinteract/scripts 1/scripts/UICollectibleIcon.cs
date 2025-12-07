@@ -99,7 +99,7 @@ public class UICollectibleIcon : MonoBehaviour
         // Play sound through AudioManager
         if (AudioManager.Instance != null)
         {
-            AudioManager.Instance.PlayUISound(data.soundClip, 0.7f);
+            AudioManager.Instance.PlayUISound(data.soundClip, 0.2f);
         }
 
         Debug.Log($"Playing: {data.displayName}");

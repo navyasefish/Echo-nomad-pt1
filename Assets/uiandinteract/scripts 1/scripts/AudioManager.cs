@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour
@@ -7,10 +7,12 @@ public class AudioManager : MonoBehaviour
 
     [Header("Audio Source Pool")]
     [SerializeField] private int poolSize = 10;
-    //[SerializeField] private GameObject audioSourcePrefab;
 
     private Queue<AudioSource> audioSourcePool = new Queue<AudioSource>();
     private List<AudioSource> activeAudioSources = new List<AudioSource>();
+
+    // 🔥 Dedicated UI audio source (prevents overlap issues)
+    private AudioSource uiAudioSource;
 
     void Awake()
     {
@@ -24,13 +26,19 @@ public class AudioManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(transform.root.gameObject);
 
-
         InitializePool();
+        InitializeUIAudioSource();
+    }
+
+    void InitializeUIAudioSource()
+    {
+        uiAudioSource = gameObject.AddComponent<AudioSource>();
+        uiAudioSource.playOnAwake = false;
+        uiAudioSource.spatialBlend = 0f; // 2D UI sound
     }
 
     void InitializePool()
     {
-        // Create pool of audio sources
         for (int i = 0; i < poolSize; i++)
         {
             GameObject obj = new GameObject($"PooledAudioSource_{i}");
@@ -38,7 +46,7 @@ public class AudioManager : MonoBehaviour
 
             AudioSource source = obj.AddComponent<AudioSource>();
             source.playOnAwake = false;
-            source.spatialBlend = 1f; // 3D sound by default
+            source.spatialBlend = 1f;
             source.maxDistance = 20f;
             source.rolloffMode = AudioRolloffMode.Linear;
 
@@ -47,7 +55,24 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Play a 3D sound at a specific position
+    /// ⭐ UI Sounds – only one can play at a time
+    /// </summary>
+    public void PlayUISound(AudioClip clip, float volume = 1f)
+    {
+        if (clip == null)
+            return;
+
+        // If UI sound is already playing → ignore next clicks
+        if (uiAudioSource.isPlaying)
+            return;
+
+        uiAudioSource.clip = clip;
+        uiAudioSource.volume = volume;
+        uiAudioSource.Play();
+    }
+
+    /// <summary>
+    /// ⭐ 3D sounds (world sounds)
     /// </summary>
     public void PlayAtPosition(AudioClip clip, Vector3 position, float volume = 1f)
     {
@@ -68,27 +93,6 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(ReturnToPoolAfterPlay(source, clip.length));
     }
 
-    /// <summary>
-    /// Play a 2D UI sound (no position)
-    /// </summary>
-    public void PlayUISound(AudioClip clip, float volume = 1f)
-    {
-        if (clip == null)
-        {
-            Debug.LogWarning("AudioManager: Null clip provided");
-            return;
-        }
-
-        AudioSource source = GetAvailableSource();
-        source.spatialBlend = 0f; // 2D sound
-        source.clip = clip;
-        source.volume = volume;
-        source.Play();
-
-        activeAudioSources.Add(source);
-        StartCoroutine(ReturnToPoolAfterPlay(source, clip.length));
-    }
-
     AudioSource GetAvailableSource()
     {
         if (audioSourcePool.Count > 0)
@@ -97,8 +101,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            // Pool exhausted, create new source
-            Debug.LogWarning("AudioManager: Pool exhausted, creating additional source");
+            Debug.LogWarning("AudioManager: Pool exhausted, creating extra source");
             GameObject obj = new GameObject($"ExtraAudioSource_{activeAudioSources.Count}");
             obj.transform.SetParent(transform);
             AudioSource source = obj.AddComponent<AudioSource>();
@@ -118,7 +121,7 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Stop all currently playing sounds
+    /// Stop all active sounds (except UI sound)
     /// </summary>
     public void StopAllSounds()
     {
