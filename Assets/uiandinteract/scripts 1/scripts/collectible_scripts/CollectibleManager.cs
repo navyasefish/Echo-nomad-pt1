@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+
 public class CollectibleManager : MonoBehaviour
 {
     public static CollectibleManager Instance { get; private set; }
@@ -16,7 +17,6 @@ public class CollectibleManager : MonoBehaviour
 
     private Dictionary<string, List<CollectibleObject>> registeredCollectibles = new Dictionary<string, List<CollectibleObject>>();
 
-
     void Awake()
     {
         // Singleton
@@ -29,17 +29,15 @@ public class CollectibleManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(transform.root.gameObject);
 
+        // ⭐ Reset save data on new build version
+        SaveSystem.CheckVersion();
     }
 
     void Start()
     {
-        // Load save data and disable already collected items
         LoadCollectedStates();
     }
 
-    /// <summary>
-    /// Register a collectible object in the scene
-    /// </summary>
     public void RegisterCollectible(CollectibleObject obj, string collectibleID)
     {
         if (string.IsNullOrEmpty(collectibleID))
@@ -54,26 +52,19 @@ public class CollectibleManager : MonoBehaviour
             return;
         }
 
-        // If key doesn't exist, create a list
         if (!registeredCollectibles.ContainsKey(collectibleID))
         {
             registeredCollectibles[collectibleID] = new List<CollectibleObject>();
         }
 
-        // Add this instance to the list
         registeredCollectibles[collectibleID].Add(obj);
 
-        // If ID already collected → disable this instance immediately
         if (SaveSystem.IsCollected(collectibleID))
         {
             obj.SetAlreadyCollected();
         }
     }
 
-
-    /// <summary>
-    /// Called when a collectible is collected
-    /// </summary>
     public void OnCollect(string collectibleID, Vector3 position)
     {
         CollectibleData data = database.GetCollectibleByID(collectibleID);
@@ -84,60 +75,55 @@ public class CollectibleManager : MonoBehaviour
             return;
         }
 
-        // Save progress
+        // Save
         SaveSystem.MarkCollected(collectibleID);
 
         // Play sound
         AudioClip clip = data.soundClip != null ? data.soundClip : defaultCollectionSound;
         if (clip != null && AudioManager.Instance != null)
         {
-            AudioManager.Instance.PlayAtPosition(clip, position, 0.8f);
+            AudioManager.Instance.PlayAtPosition(clip, position, 0.3f);
         }
 
-        // Show toast
-        if (ToastManager.Instance != null)
-        {
-            ToastManager.Instance.Show($"Collected: {data.displayName}");
-        }
+        // ⭐ NEW Notification Panel (2 sec later)
+        StartCoroutine(ShowDelayedNotification(data.displayName));
 
-        // Notify UI
+        // Update UI
         OnCollectibleCollected?.Invoke(data);
 
         Debug.Log($"✓ Collected: {data.displayName} ({collectibleID})");
     }
 
-    /// <summary>
-    /// Load collected states and disable glow for collected items
-    /// </summary>
+    private System.Collections.IEnumerator ShowDelayedNotification(string itemName)
+    {
+        yield return new WaitForSeconds(2f);
+
+        if (NotificationManager.Instance != null)
+        {
+            NotificationManager.Instance.Show(itemName);
+        }
+    }
+
     private void LoadCollectedStates()
     {
         List<string> collectedIDs = SaveSystem.GetAllCollected();
         Debug.Log($"CollectibleManager: {collectedIDs.Count} items already collected");
     }
 
-    /// <summary>
-    /// Get collected count
-    /// </summary>
     public int GetCollectedCount()
     {
         return SaveSystem.GetCollectedCount();
     }
 
-    /// <summary>
-    /// Get total collectibles
-    /// </summary>
     public int GetTotalCount()
     {
         return database.allCollectibles.Count;
     }
 
-    /// <summary>
-    /// Debug: Clear all save data
-    /// </summary>
     [ContextMenu("Clear All Save Data")]
     public void ClearAllSaveData()
     {
         SaveSystem.ClearAllData();
-        Debug.Log("CollectibleManager: Save data cleared. Restart scene to see changes.");
+        Debug.Log("CollectibleManager: Save data cleared.");
     }
 }

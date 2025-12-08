@@ -5,7 +5,7 @@ public class CollectibleObject : MonoBehaviour
 {
     [Header("Audio")]
     [SerializeField] private AudioClip collectionSound;
-    [SerializeField] private float soundVolume = 0.5f;
+    [SerializeField] private float soundVolume = 0.3f;
 
     [Header("Collection Settings")]
     [SerializeField] private bool autoCollectOnProximity = false;

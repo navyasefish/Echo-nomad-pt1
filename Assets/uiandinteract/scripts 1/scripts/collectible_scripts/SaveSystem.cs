@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public static class SaveSystem
@@ -12,12 +12,27 @@ public static class SaveSystem
     private class SaveData
     {
         public List<string> collectedIDs = new List<string>();
-        private const string CURRENT_VERSION = "1.0.1";
+        private const string CURRENT_VERSION = "4.1.0";
     }
 
     /// <summary>
     /// Mark a collectible as collected
     /// </summary>
+    /// 
+    public static void CheckVersion()
+    {
+        string currentVersion = Application.version;
+        string savedVersion = PlayerPrefs.GetString("GameVersion", "");
+
+        if (currentVersion != savedVersion)
+        {
+            // Version changed → reset everything
+            ClearAllData();
+            PlayerPrefs.SetString("GameVersion", currentVersion);
+            PlayerPrefs.Save();
+        }
+    }
+
     public static void MarkCollected(string collectibleID)
     {
         SaveData data = Load();

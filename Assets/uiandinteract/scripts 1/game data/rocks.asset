@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collectibleID: rocks_01
   displayName: Celestite
-  soundClip: {fileID: 8300000, guid: df725a1c5e53e2c47b13556a9333f725, type: 3}
+  soundClip: {fileID: 8300000, guid: 5851951304c60d144867c528a63b4311, type: 3}
   icon: {fileID: 21300000, guid: 24b9666f7e6ef8442a80aa580aa8bffe, type: 3}
   lockedIcon: {fileID: 21300000, guid: b79fe7cb3534c1646a1f1e83f2adc9b8, type: 3}
   description: 
