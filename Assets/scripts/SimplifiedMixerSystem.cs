@@ -15,6 +15,10 @@ public class SimplifiedMixerSystem : MonoBehaviour
   public Button playButton;
   public Button resetButton;
 
+  [Header("Button Images")]
+  public Sprite playIcon;  // Drag your play icon sprite here
+  public Sprite pauseIcon; // Drag your pause icon sprite here
+
   [Header("Correct Combination (Optional)")]
   public SoundDefinition[] correctSet; // For checking if player got it right
 
@@ -171,13 +175,8 @@ public class SimplifiedMixerSystem : MonoBehaviour
 
     isPlaying = true;
 
-    // Change button text
-    if (playButton != null)
-    {
-      Text btnText = playButton.GetComponentInChildren<Text>();
-      if (btnText != null)
-        btnText.text = "STOP";
-    }
+    // Change button icon to pause
+    UpdatePlayButtonIcon();
 
     // Check for success if all slots filled
     if (filledCount == slots.Length)
@@ -198,13 +197,8 @@ public class SimplifiedMixerSystem : MonoBehaviour
 
     isPlaying = false;
 
-    // Change button text back
-    if (playButton != null)
-    {
-      Text btnText = playButton.GetComponentInChildren<Text>();
-      if (btnText != null)
-        btnText.text = "PLAY";
-    }
+    // Change button icon back to play
+    UpdatePlayButtonIcon();
   }
 
   public void ResetAllSlots()
@@ -267,6 +261,39 @@ public class SimplifiedMixerSystem : MonoBehaviour
     {
       Debug.Log("🎉🎉🎉 SUCCESS! Showing popup");
       successPopup.SetActive(true);
+    }
+  }
+
+  void UpdatePlayButtonIcon()
+  {
+    if (playButton == null)
+      return;
+
+    // Try to get Image from button itself first
+    Image buttonImage = playButton.GetComponent<Image>();
+
+    // If not found, look for Image in children (for icon child setup)
+    if (buttonImage == null)
+    {
+      buttonImage = playButton.GetComponentInChildren<Image>();
+    }
+
+    if (buttonImage == null)
+    {
+      Debug.LogWarning("Play button has no Image component");
+      return;
+    }
+
+    // Switch sprite based on playing state
+    if (isPlaying && pauseIcon != null)
+    {
+      buttonImage.sprite = pauseIcon;
+      Debug.Log("   🔄 Button icon → PAUSE");
+    }
+    else if (!isPlaying && playIcon != null)
+    {
+      buttonImage.sprite = playIcon;
+      Debug.Log("   🔄 Button icon → PLAY");
     }
   }
 }
