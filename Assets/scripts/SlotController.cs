@@ -3,53 +3,25 @@ using UnityEngine.UI;
 
 public class SlotController : MonoBehaviour
 {
-  public Image iconImage;
-  public AudioSource audioSource;
+  [Header("References")]
+  public Image iconImage;        // The icon display
+  public AudioSource audioSource; // The audio player
 
-  public SoundDefinition currentSound;
-
-  private MixerUIManager mixer;
+  [Header("Runtime State")]
+  public SoundDefinition currentSound; // What sound is in this slot
 
   void Start()
   {
-    mixer = FindAnyObjectByType<MixerUIManager>();
-  }
+    // Start with no icon visible
+    if (iconImage != null)
+      iconImage.enabled = false;
 
-  public void AssignSound(SoundDefinition sound)
-  {
-    // Stop existing sound
-    if (currentSound != null)
+    // Configure audio source
+    if (audioSource != null)
     {
+      audioSource.playOnAwake = false;
+      audioSource.loop = true;
       audioSource.Stop();
-      mixer.usedSoundIds.Remove(currentSound.soundID);
     }
-
-    currentSound = sound;
-    iconImage.sprite = sound.icon;
-    iconImage.enabled = true;
-
-    mixer.usedSoundIds.Add(sound.soundID);
-
-    // Schedule play
-    double startTime = LoopConductor.Instance.GetNextLoopStart();
-    audioSource.clip = sound.clip;
-    audioSource.loop = true;
-    audioSource.PlayScheduled(startTime);
-
-    mixer.CheckForSuccess();
-  }
-
-  public void ClearSlot()
-  {
-    if (currentSound != null)
-    {
-      audioSource.Stop();
-      mixer.usedSoundIds.Remove(currentSound.soundID);
-    }
-
-    currentSound = null;
-    iconImage.enabled = false;
-
-    mixer.CheckForSuccess();
   }
 }

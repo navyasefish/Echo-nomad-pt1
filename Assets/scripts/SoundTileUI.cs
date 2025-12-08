@@ -3,22 +3,15 @@ using UnityEngine.UI;
 
 public class SoundTileUI : MonoBehaviour
 {
-  public SoundDefinition sound;   // drag your ScriptableObject here
-  public Image iconImage;         // drag your UI Image here
+  public SoundDefinition sound; // Drag your ScriptableObject here
+  public Image iconImage;       // The icon display
 
-  private MixerUIManager mixer;
-
-  private void OnEnable()
+  void Start()
   {
-    mixer = FindAnyObjectByType<MixerUIManager>();
-
+    // Set the icon from the sound definition
     if (sound != null && iconImage != null)
+    {
       iconImage.sprite = sound.icon;
-  }
-
-
-  public bool CanUse()
-  {
-    return !mixer.usedSoundIds.Contains(sound.soundID);
+    }
   }
 }
