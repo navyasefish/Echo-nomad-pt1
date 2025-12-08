@@ -25,7 +25,12 @@ public class SimplifiedMixerSystem : MonoBehaviour
   [Header("UI")]
   public GameObject successPopup;
 
+  [Header("Success Actions")]
+  public GameObject blockerObject;  // The object blocking the path
+  public GameObject hermitObject;   // The hermit character to hide
+
   private bool isPlaying = false;
+  private bool hasSucceeded = false; // Track if puzzle was solved
 
   void Start()
   {
@@ -54,9 +59,23 @@ public class SimplifiedMixerSystem : MonoBehaviour
     if (successPopup != null)
       successPopup.SetActive(false);
 
+    hasSucceeded = false;
+
     Debug.Log("✅ Simplified Mixer System initialized");
     Debug.Log($"   Slots: {slots.Length}");
     Debug.Log($"   Tiles: {soundTiles.Length}");
+  }
+
+  void Update()
+  {
+    // Check for left click to dismiss success popup
+    if (hasSucceeded && successPopup != null && successPopup.activeSelf)
+    {
+      if (Input.GetMouseButtonDown(0))
+      {
+        DismissSuccessPopup();
+      }
+    }
   }
 
   void OnTileClicked(SoundTileUI tile)
@@ -227,6 +246,8 @@ public class SimplifiedMixerSystem : MonoBehaviour
     if (successPopup != null)
       successPopup.SetActive(false);
 
+    hasSucceeded = false;
+
     Debug.Log("   ✅ All slots cleared");
   }
 
@@ -261,7 +282,29 @@ public class SimplifiedMixerSystem : MonoBehaviour
     {
       Debug.Log("🎉🎉🎉 SUCCESS! Showing popup");
       successPopup.SetActive(true);
+      hasSucceeded = true;
+
+      // Remove blocker and hermit immediately on success
+      if (blockerObject != null)
+      {
+        Debug.Log("   ✅ Removing blocker object");
+        blockerObject.SetActive(false);
+      }
+
+      if (hermitObject != null)
+      {
+        Debug.Log("   ✅ Hiding hermit");
+        hermitObject.SetActive(false);
+      }
     }
+  }
+
+  void DismissSuccessPopup()
+  {
+    Debug.Log("👆 Left click detected - dismissing success popup");
+
+    if (successPopup != null)
+      successPopup.SetActive(false);
   }
 
   void UpdatePlayButtonIcon()
