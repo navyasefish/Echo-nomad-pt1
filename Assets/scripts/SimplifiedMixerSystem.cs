@@ -14,6 +14,7 @@ public class SimplifiedMixerSystem : MonoBehaviour
   [Header("Buttons")]
   public Button playButton;
   public Button resetButton;
+  public Button challengeAudioButton; // Button to play the challenge audio
 
   [Header("Button Images")]
   public Sprite playIcon;  // Drag your play icon sprite here
@@ -29,8 +30,13 @@ public class SimplifiedMixerSystem : MonoBehaviour
   public GameObject blockerObject;  // The object blocking the path
   public GameObject hermitObject;   // The hermit character to hide
 
+  [Header("Challenge Audio")]
+  public AudioClip challengeAudioClip; // The audio clip to play (optional, if not using button's AudioSource)
+
   private bool isPlaying = false;
   private bool hasSucceeded = false; // Track if puzzle was solved
+  private bool isChallengeAudioPlaying = false; // Track challenge audio state
+  private AudioSource challengeAudioSource; // Reference to challenge audio source
 
   void Start()
   {
@@ -40,6 +46,29 @@ public class SimplifiedMixerSystem : MonoBehaviour
 
     if (resetButton != null)
       resetButton.onClick.AddListener(ResetAllSlots);
+
+    if (challengeAudioButton != null)
+    {
+      challengeAudioButton.onClick.AddListener(ToggleChallengeAudio);
+
+      // Get or add AudioSource to challenge button
+      challengeAudioSource = challengeAudioButton.GetComponent<AudioSource>();
+      if (challengeAudioSource == null)
+      {
+        challengeAudioSource = challengeAudioButton.gameObject.AddComponent<AudioSource>();
+        Debug.Log("Added AudioSource to challenge button");
+      }
+
+      // Setup audio source
+      challengeAudioSource.playOnAwake = false;
+      challengeAudioSource.loop = false;
+
+      // Assign clip if provided
+      if (challengeAudioClip != null)
+        challengeAudioSource.clip = challengeAudioClip;
+
+      Debug.Log($"Challenge audio button setup (has clip: {challengeAudioSource.clip != null})");
+    }
 
     // Setup click listeners for all tiles
     foreach (var tile in soundTiles)
@@ -75,6 +104,13 @@ public class SimplifiedMixerSystem : MonoBehaviour
       {
         DismissSuccessPopup();
       }
+    }
+
+    // Check if challenge audio finished playing
+    if (isChallengeAudioPlaying && challengeAudioSource != null && !challengeAudioSource.isPlaying)
+    {
+      isChallengeAudioPlaying = false;
+      UpdateChallengeButtonIcon();
     }
   }
 
@@ -164,6 +200,13 @@ public class SimplifiedMixerSystem : MonoBehaviour
       Debug.Log("   Already playing, stopping...");
       StopAllSounds();
       return;
+    }
+
+    // Stop challenge audio if playing
+    if (isChallengeAudioPlaying)
+    {
+      Debug.Log("   Stopping challenge audio to play mixer sounds");
+      StopChallengeAudio();
     }
 
     // Check if all slots are filled
@@ -337,6 +380,86 @@ public class SimplifiedMixerSystem : MonoBehaviour
     {
       buttonImage.sprite = playIcon;
       Debug.Log("   🔄 Button icon → PLAY");
+    }
+  }
+
+  public void ToggleChallengeAudio()
+  {
+    if (challengeAudioSource == null)
+    {
+      Debug.LogWarning("No challenge audio source!");
+      return;
+    }
+
+    if (challengeAudioSource.clip == null)
+    {
+      Debug.LogWarning("No challenge audio clip assigned!");
+      return;
+    }
+
+    if (isChallengeAudioPlaying)
+    {
+      // Stop the audio
+      Debug.Log("⏹️ Stopping challenge audio");
+      StopChallengeAudio();
+    }
+    else
+    {
+      // Stop mixer sounds if playing
+      if (isPlaying)
+      {
+        Debug.Log("   Stopping mixer sounds to play challenge audio");
+        StopAllSounds();
+      }
+
+      // Play the audio
+      Debug.Log("▶️ Playing challenge audio");
+      challengeAudioSource.Play();
+      isChallengeAudioPlaying = true;
+      UpdateChallengeButtonIcon();
+    }
+  }
+
+  void StopChallengeAudio()
+  {
+    if (challengeAudioSource != null)
+    {
+      challengeAudioSource.Stop();
+      isChallengeAudioPlaying = false;
+      UpdateChallengeButtonIcon();
+    }
+  }
+
+  void UpdateChallengeButtonIcon()
+  {
+    if (challengeAudioButton == null)
+      return;
+
+    // Try to get Image from button itself first
+    Image buttonImage = challengeAudioButton.GetComponent<Image>();
+
+    // If not found, look for Image in children (for icon child setup)
+    if (buttonImage == null)
+    {
+      buttonImage = challengeAudioButton.GetComponentInChildren<Image>();
+    }
+
+    if (buttonImage == null)
+    {
+      Debug.LogWarning("Challenge button has no Image component");
+      return;
+    }
+
+    // Switch sprite based on playing state
+    if (isChallengeAudioPlaying && pauseIcon != null)
+    {
+      buttonImage.sprite = pauseIcon;
+      Debug.Log("   🔄 Challenge button icon → PAUSE");
+    }
+    else if (!isChallengeAudioPlaying && playIcon != null)
+    {
+      buttonImage.sprite = playIcon;
+      Debug.Log("   🔄 Challenge button icon → PLAY");
     }
   }
 }
