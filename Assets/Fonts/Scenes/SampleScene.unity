@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.2627451, g: 0.3137255, b: 0.30461472, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
@@ -3893,8 +3893,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -137.72717, y: -143.07652}
-  m_SizeDelta: {x: 879.8065, y: 324.7839}
+  m_AnchoredPosition: {x: -115.080444, y: -143.07652}
+  m_SizeDelta: {x: 834.5131, y: 324.7839}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &460791640
 MonoBehaviour:
@@ -3909,7 +3909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.9411765}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9411765}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9746,15 +9746,15 @@ RectTransform:
   m_GameObject: {fileID: 534550400}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.84166, y: 0.84166, z: 0.84166}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 525539206}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -548, y: 235}
-  m_SizeDelta: {x: 195.0537, y: 153.7389}
+  m_AnchoredPosition: {x: -564.14795, y: 224}
+  m_SizeDelta: {x: 162.7577, y: 141.23}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &534550402
 MonoBehaviour:
@@ -9832,7 +9832,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 478a2ea0ae532514b9659a08c8b7a8fd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8fbddf6ba3d42834b81b8a56a4999f84, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

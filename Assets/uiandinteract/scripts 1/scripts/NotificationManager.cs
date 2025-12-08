@@ -11,7 +11,7 @@ public class NotificationManager : MonoBehaviour
     public TextMeshProUGUI messageText;
 
     [Header("Settings")]
-    public float slideSpeed = 600f;
+    public float slideSpeed = 1000f;
     public Vector2 onScreenPos = new Vector2(-20, 50);
     public Vector2 offScreenPos = new Vector2(400, 50);
     public float visibleTime = 2f;
