@@ -114,6 +114,6 @@ public class HermitCutsceneManager : MonoBehaviour, IStartConversation
     if (repeatedCutscenePanel != null) repeatedCutscenePanel.SetActive(false);
 
     // callback to caller to restore movement and optionally disable blocker
-    caller?.EndInteraction(disableBlocker: true, resumeHumming: false);
+    caller?.EndInteraction(disableBlocker: false, resumeHumming: false);
   }
 }

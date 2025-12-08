@@ -25,6 +25,7 @@ public class SimplifiedMixerSystem : MonoBehaviour
 
   [Header("UI")]
   public GameObject successPopup;
+  public GameObject mixerPanel; // The entire mixer UI panel to disable after victory
 
   [Header("Success Actions")]
   public GameObject blockerObject;  // The object blocking the path
@@ -35,6 +36,7 @@ public class SimplifiedMixerSystem : MonoBehaviour
 
   private bool isPlaying = false;
   private bool hasSucceeded = false; // Track if puzzle was solved
+  private bool victoryShown = false; // Track if victory popup was already shown
   private bool isChallengeAudioPlaying = false; // Track challenge audio state
   private AudioSource challengeAudioSource; // Reference to challenge audio source
 
@@ -89,6 +91,7 @@ public class SimplifiedMixerSystem : MonoBehaviour
       successPopup.SetActive(false);
 
     hasSucceeded = false;
+    victoryShown = false;
 
     Debug.Log("✅ Simplified Mixer System initialized");
     Debug.Log($"   Slots: {slots.Length}");
@@ -111,6 +114,19 @@ public class SimplifiedMixerSystem : MonoBehaviour
     {
       isChallengeAudioPlaying = false;
       UpdateChallengeButtonIcon();
+    }
+
+    // Disable mixer panel interaction while victory popup is visible
+    if (mixerPanel != null && successPopup != null)
+    {
+      bool mixerShouldBeInteractable = !successPopup.activeSelf;
+      CanvasGroup mixerCanvasGroup = mixerPanel.GetComponent<CanvasGroup>();
+
+      if (mixerCanvasGroup == null)
+        mixerCanvasGroup = mixerPanel.AddComponent<CanvasGroup>();
+
+      mixerCanvasGroup.interactable = mixerShouldBeInteractable;
+      mixerCanvasGroup.blocksRaycasts = mixerShouldBeInteractable;
     }
   }
 
@@ -296,6 +312,13 @@ public class SimplifiedMixerSystem : MonoBehaviour
 
   void CheckForSuccess()
   {
+    // If victory was already shown, don't check again
+    if (victoryShown)
+    {
+      Debug.Log("Victory already achieved - skipping success check");
+      return;
+    }
+
     if (correctSet == null || correctSet.Length != slots.Length)
     {
       Debug.Log("No correct set defined or wrong length");
@@ -323,22 +346,13 @@ public class SimplifiedMixerSystem : MonoBehaviour
 
     if (success && successPopup != null)
     {
-      Debug.Log("🎉🎉🎉 SUCCESS! Showing popup");
+      Debug.Log("🎉🎉🎉 SUCCESS! Showing victory popup (first time)");
       successPopup.SetActive(true);
       hasSucceeded = true;
+      victoryShown = true; // Mark that victory was shown
 
-      // Remove blocker and hermit immediately on success
-      if (blockerObject != null)
-      {
-        Debug.Log("   ✅ Removing blocker object");
-        blockerObject.SetActive(false);
-      }
-
-      if (hermitObject != null)
-      {
-        Debug.Log("   ✅ Hiding hermit");
-        hermitObject.SetActive(false);
-      }
+      // Blocker and hermit will be removed when popup is dismissed
+      Debug.Log("   ⏳ Blocker and hermit will disappear when you click to dismiss");
     }
   }
 
@@ -348,6 +362,19 @@ public class SimplifiedMixerSystem : MonoBehaviour
 
     if (successPopup != null)
       successPopup.SetActive(false);
+
+    // NOW remove blocker and hermit (after player has seen the victory screen)
+    if (blockerObject != null)
+    {
+      Debug.Log("   ✅ Removing blocker object");
+      blockerObject.SetActive(false);
+    }
+
+    if (hermitObject != null)
+    {
+      Debug.Log("   ✅ Hiding hermit");
+      hermitObject.SetActive(false);
+    }
   }
 
   void UpdatePlayButtonIcon()
