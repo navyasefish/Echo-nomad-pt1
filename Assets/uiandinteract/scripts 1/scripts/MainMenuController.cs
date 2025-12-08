@@ -10,6 +10,8 @@ public class MainMenuController : MonoBehaviour
     public GameObject mainMenuUI;
     public AudioSource uiClickSound;
     public AudioSource bgMusic;
+    public GameObject extraText1;
+    public GameObject extraText2;
 
     void Start()
     {
@@ -27,6 +29,9 @@ public class MainMenuController : MonoBehaviour
         // play click sound
         if (uiClickSound) uiClickSound.Play();
 
+        extraText1.SetActive(false);
+        extraText2.SetActive(false);
+
         // fade out bg music
         if (bgMusic) StartCoroutine(FadeOutMusic());
 
@@ -40,6 +45,9 @@ public class MainMenuController : MonoBehaviour
 
         if (bgMusic) StartCoroutine(FadeOutMusic());
 
+        extraText1.SetActive(false);
+        extraText2.SetActive(false);
+
         mainMenuUI.SetActive(false);
         StartCoroutine(FadeAndQuit());
     }
@@ -47,7 +55,8 @@ public class MainMenuController : MonoBehaviour
     IEnumerator FadeAndLoadScene(string sceneName)
     {
         yield return FadeToBlack();
-        SceneManager.LoadScene(sceneName);   // INSTANT LOAD — NO WAIT
+        yield return SceneManager.LoadSceneAsync(sceneName);
+
     }
 
     IEnumerator FadeAndQuit()
@@ -82,7 +91,8 @@ public class MainMenuController : MonoBehaviour
             yield return null;
         }
 
-        bgMusic.Stop();
-        bgMusic.volume = startVol;
+        // bgMusic.Stop();  // REMOVE THIS
+        // don't reset volume here either 
     }
+
 }

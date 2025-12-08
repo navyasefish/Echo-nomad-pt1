@@ -33,7 +33,7 @@ public class NotificationManager : MonoBehaviour
     IEnumerator NotificationRoutine(string itemName)
     {
         isShowing = true;
-        messageText.text = $"Item Collected: {itemName}";
+        messageText.text = itemName;
 
         // Slide In
         yield return StartCoroutine(Slide(panel, onScreenPos));
